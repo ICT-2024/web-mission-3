@@ -1,29 +1,42 @@
-# Mission 2
+# Mission 3
 
-## Part 0
+## Part 0,1,2
 
 [Link to video] 
-Скринкаст: https://disk.yandex.ru/i/RBH5YVdAz0eOkQ
-Ссылка endpoint url: https://qwjcps.buildship.run/mission2
+Ссылка на видео: https://disk.yandex.ru/i/um81pcnCOUzd8A
+Ссылки endpoint url: 
+1) https://qwjcps.buildship.run/me
+2) https://qwjcps.buildship.run/message
 
 
-## Part1
+## Part 3
 
-- Вопрос 1	 
-> Ответ: SSH (Secure Shell) — это протокол, который используется для безопасного подключения к удалённым серверам. Он обеспечивает шифрование данных, таких как логины и команды, что позволяет защищённо управлять удалёнными машинами через небезопасные сети.
+``` sql 1 получить список юзернеймов пользователей
+SELECT username 
+FROM users;
+```
 
-- Вопрос 2	 
-> Ответ: Публичный ключ нужно добавить в файл ~/.ssh/authorized_keys пользователя, от имени которого Вася будет подключаться к серверу. Это позволит серверу авторизовать его по ключу. 
+``` sql 2 получить кол-во отправленных сообщений каждым пользователем: username - number of sent messages
+SELECT u.username, COUNT(m.id) AS sent_messages 
+FROM users u 
+LEFT JOIN messages m ON u.id = m.from 
+GROUP BY u.username;
+```
 
-- Вопрос 3	 
-> Ответ: •  Long Polling: Это метод взаимодействия клиента и сервера, при котором клиент отправляет запрос, а сервер удерживает его до тех пор, пока не появятся новые данные. После отправки ответа клиент снова отправляет запрос, что создаёт иллюзию постоянного соединения.
-•  Webhooks: Это механизм, когда сервер сам отправляет данные на заранее указанный URL при возникновении определённого события. Таким образом, клиент не запрашивает данные постоянно, а получает их автоматически, как только они появятся.
+``` sql 3 Получить пользователя с самым большим кол-вом полученных сообщений и само количество username - number of received messages
+Copy code
+SELECT u.username, COUNT(m.id) AS received_messages 
+FROM users u LEFT JOIN messages m ON u.id = m.to 
+GROUP BY u.username 
+ORDER BY received_messages 
+DESC LIMIT 1;
+```
 
-- Вопрос 4	 
-> Ответ: Issues на GitHub — это инструмент для отслеживания задач и проблем в проекте. Они позволяют разработчикам и пользователям сообщать о баги, предлагать новые функции и обсуждать развитие проекта.
-Примеры из реальных проектов:
-https://github.com/vuejs/core/issues/8877
-https://github.com/facebook/react/issues/26802
+``` sql 4 Получить среднее кол-во сообщений, отправленное каждым пользователем
+SELECT AVG(sent_message_count) AS avg_sent_messages 
+FROM ( SELECT COUNT(m.id) AS sent_message_count FROM users u 
+LEFT JOIN messages m ON u.id = m.from 
+GROUP BY u.id ) 
+AS user_sent_messages;
+```
 
-- Вопрос 5	 
-> Ответ: Чтобы Git отслеживал пустую папку, можно создать внутри неё файл с именем .gitkeep. Так она уже не будет пустой)
