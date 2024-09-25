@@ -4,6 +4,7 @@
 
 [Link to video] 
 Ссылка на видео: https://disk.yandex.ru/i/um81pcnCOUzd8A
+
 Ссылки endpoint url: 
 1) https://qwjcps.buildship.run/me
 2) https://qwjcps.buildship.run/message
@@ -24,7 +25,6 @@ GROUP BY u.username;
 ```
 
 ``` sql 3 Получить пользователя с самым большим кол-вом полученных сообщений и само количество username - number of received messages
-Copy code
 SELECT u.username, COUNT(m.id) AS received_messages 
 FROM users u LEFT JOIN messages m ON u.id = m.to 
 GROUP BY u.username 
